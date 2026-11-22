@@ -2,7 +2,7 @@ import { useState } from "react"
 import type { FormEvent } from "react"
 import { IdCard, Mail, Phone } from "lucide-react"
 import { Buttons, contactImage } from "../imports"
-
+import Nav from '../components/Nav'
 function Contact() {
   const [formNotice, setFormNotice] = useState('')
 
@@ -14,6 +14,7 @@ function Contact() {
   return (
     <main>
       <title> Contact Us - Serenia Real Estate</title>
+      <Nav />
       <section className="reveal">
         <div>
           <img
