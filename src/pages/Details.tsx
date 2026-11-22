@@ -3,37 +3,24 @@ import { Link } from 'react-router-dom'
 import avatar from '../assets/Avatar.png'
 import caretDown from '../icons/Vector.svg'
 import {
-  Search,
   MessageSquare,
   Bell,
-  ChevronDown,
-
   MoreVertical,
   Pencil,
-  Cloud,
-  LayoutDashboard,
-  ClipboardList,
-  Building2,
-  Globe,
-  Image as ImageIcon,
-  Settings,
-  LogOut,
-  Maximize2,
+
+
   Home,
   Layers,
   BedDouble,
   Bath,
   Grid,
-  TrendingUp,
   DoorClosed,
   Zap,
-  Sparkles,
   School,
   ShoppingBag,
   Hospital,
   Train,
-  PanelLeft,
-  X,
+
   Menu as MenuIcon,
   UploadCloud,
   ChartNoAxesColumnIncreasing,
@@ -42,15 +29,12 @@ import {
   Birdhouse
 } from 'lucide-react'
 
-import { arunapropertyimg, logoImage, maparuna } from '../imports'
+import { arunapropertyimg, maparuna } from '../imports'
 import Aside from '../components/Aside'
 
 export default function Details() {
   const [activeTab, setActiveTab] = useState('About')
-  const [propertiesExpanded, setPropertiesExpanded] = useState(true)
-  const [selectedProperty, setSelectedProperty] = useState('Aruna residence')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
 
   // History timeline data matching the design
   const historyUpdates = [

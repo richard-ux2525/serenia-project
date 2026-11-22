@@ -4,7 +4,6 @@ import {
   Calendar,
   EllipsisVertical,
   Share,
-  Play,
   ArrowRight,
   Ruler,
   Home,

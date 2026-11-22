@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MapPin, Globe, Compass, Info } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import { maparuna } from '../../imports'
 
 export interface ClusterDetailsData {

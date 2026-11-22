@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion'
 import boulevard from '../icons/boulevard.svg'
 import facilites from '../icons/Facilities.svg'
 import bedRoom from '../icons/Bedroom.svg'
 import {
-  BedDouble,
-  MapPin,
-  ShieldCheck,
   ArrowUpRight,
   ArrowRight,
   ArrowLeft,
@@ -98,7 +95,7 @@ const communities = [
 // ANIMATION SETTINGS
 
 const slideVariants = {
-  enter: (direction) => ({
+  enter: (direction: number) => ({
     x: direction > 0 ? '100%' : '-100%',
     opacity: 1,
   }),
@@ -108,7 +105,7 @@ const slideVariants = {
     opacity: 1,
   },
 
-  exit: (direction) => ({
+  exit: (direction: number) => ({
     x: direction > 0 ? '-100%' : '100%',
     opacity: 1,
   }),
@@ -130,7 +127,7 @@ function SignatureCommunities() {
 
   // CHANGE COMMUNITY
 
-  const navigate = (dir) => {
+  const navigate = (dir: number) => {
     setDirection(dir)
     setActivePhoto(0)
 
@@ -142,7 +139,7 @@ function SignatureCommunities() {
 
   // HANDLE SWIPE
 
-  const handleDragEnd = (event, info) => {
+  const handleDragEnd = (_event: unknown, info: PanInfo) => {
     const swipeDistance = 100
     const swipeVelocity = 450
 

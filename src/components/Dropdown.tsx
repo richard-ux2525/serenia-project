@@ -51,15 +51,15 @@ function Dropdown() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
   const activeCluster = clusters[activeIndex]
-  const desktopRef = useRef(null)
+  const desktopRef = useRef<HTMLDivElement | null>(null)
   
   const location = useLocation()
   const isActive = location.pathname.startsWith('/properties')
 
   // Close desktop dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (desktopRef.current && !desktopRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (desktopRef.current && !desktopRef.current.contains(event.target as Node)) {
         setIsOpen(false)
       }
     }

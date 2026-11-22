@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/Logo (1).png'
-import { Info, ArrowLeft } from 'lucide-react'
+import { Info } from 'lucide-react'
 
 function Forgotpwd() {
   const navigate = useNavigate()

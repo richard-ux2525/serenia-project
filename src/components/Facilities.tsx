@@ -1,8 +1,8 @@
 import line149 from '../assets/Image (1).png'
  interface FacilitiesProps {
-  textContent: string
+  textContent?: string
 }
-function Facilities({ textContent }: FacilitiesProps) {
+function Facilities({ textContent = 'Facility & amenities' }: FacilitiesProps) {
   return (
     <section className="home-facilities-section">
         <h2 className="reveal text-[45px] text-center my-20 font-medium">{textContent}</h2>

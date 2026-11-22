@@ -127,9 +127,9 @@ const questions = [
 
 function Gallery() {
   const [activeSegment, setActiveSegment] = useState('Kitchen')
-  const [openIndex, setOpenIndex] = useState(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
 
-  const toggleQuestion = (index) => {
+  const toggleQuestion = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index))
   }
 
@@ -251,7 +251,7 @@ function Gallery() {
           </p>
 
           <div className="space-y-4">
-            {questions.map(({ question, answer }, index) => {
+            {questions.map(({ question, answer }, index: number) => {
               const isOpen = openIndex === index
 
               return isOpen ? (

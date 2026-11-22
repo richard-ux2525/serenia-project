@@ -1,13 +1,7 @@
 import { useState } from 'react'
-import { Upload, FileText, CheckCircle2, Plus, Trash2, Image as ImageIcon } from 'lucide-react'
+import { Upload, FileText, CheckCircle2, Plus, Trash2 } from 'lucide-react'
 import {
   bedroom,
-  bathroom,
-  kitchen,
-  familyroom,
-  rooftop,
-  workspace,
-  stairs,
 } from '../../imports'
 
 export interface HouseMediaData {

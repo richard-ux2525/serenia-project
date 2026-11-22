@@ -43,10 +43,7 @@ import {
   smellyswing,
   stupidmap,
   stupidtree,
-  uglybush,
   uglychair,
-  uglychild,
-  whiteladyrunning,
 } from '../imports';
 import { Link } from 'react-router-dom';
 import handHeart from '../icons/handHeart.svg';

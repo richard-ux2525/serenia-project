@@ -1,4 +1,3 @@
-import React from "react";
 import stupidBox from '../assets/stupidbox.png'
 type Room = {
   id: number;

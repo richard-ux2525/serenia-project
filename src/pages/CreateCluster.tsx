@@ -3,26 +3,14 @@ import profileImage from '../assets/Avatar.png'
 import caretDown from '../icons/Vector.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  Search,
   MessageSquare,
   Bell,
-  ChevronDown,
-  LayoutDashboard,
-  ClipboardList,
-  Building2,
-  Globe,
-  Image as ImageIcon,
-  Settings,
-  LogOut,
-  PanelLeft,
-  X,
   Menu as MenuIcon,
   CheckCircle2,
   ArrowLeft,
   ArrowRight,
 } from 'lucide-react'
 
-import { logoImage } from '../imports'
 import Aside from '../components/Aside'
 import ClusterDetailsStep, { type ClusterDetailsData } from '../components/cluster-wizard/ClusterDetailsStep'
 import ClusterSpecsStep, { type ClusterSpecsData } from '../components/cluster-wizard/ClusterSpecsStep'

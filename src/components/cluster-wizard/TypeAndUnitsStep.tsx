@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import { Plus, Trash2, MapPin, Upload, Check, ChevronDown, Edit2 } from 'lucide-react'
+import { Plus, Trash2, MapPin, Upload, Check, Edit2 } from 'lucide-react'
 import type { FloorPlanPoint } from './EnterNoteDialog'
 import {
   bedroom,
   bathroom,
-  kitchen,
-  familyroom,
   arunatypebmain,
   arunatypec,
 } from '../../imports'
@@ -91,7 +88,7 @@ export default function TypeAndUnitsStep({
   onChange,
   onOpenNoteDialog,
 }: TypeAndUnitsStepProps) {
-  const [activeFloor, setActiveFloor] = useState('Ground Floor')
+  const activeFloor = 'Ground Floor'
 
   const toggleArrayItem = (
     field: 'indoorAmenities' | 'outdoorAmenities' | 'safetyAmenities',

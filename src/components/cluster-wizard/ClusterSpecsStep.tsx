@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { AlertCircle, Plus, Trash2, Upload, Sparkles, Check } from 'lucide-react'
+import { AlertCircle, Plus, Trash2, Upload, Check } from 'lucide-react'
 
 export interface CustomAmenity {
   id: string

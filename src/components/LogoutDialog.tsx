@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { LogOut, X } from 'lucide-react'
 import logoutDoor from '../assets/logoutDoor.png'
 export interface LogoutDialogProps {
   isOpen: boolean

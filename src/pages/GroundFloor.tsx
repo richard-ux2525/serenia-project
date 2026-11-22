@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   ArrowUpLeft,
   ArrowUpRight,
@@ -202,7 +202,7 @@ export default function GroundFloor() {
         )}
 
         {/* Room navigation shortcuts */}
-        {roomLinks.map(({ label, x, y, Icon }) => (
+        {roomLinks.map(({ label, x, y }) => (
           <button
             key={label}
             type="button"

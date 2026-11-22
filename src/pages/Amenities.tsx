@@ -221,12 +221,12 @@ const clustersData = [
 
 function Amenities() {
   const [isPaused, setIsPaused] = useState(false)
-  const [hoveredCard, setHoveredCard] = useState(null)
-  const [openAccordions, setOpenAccordions] = useState({
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     'Liora estate-0': true,
   })
 
-  const toggleAccordion = (key) => {
+  const toggleAccordion = (key: string) => {
     setOpenAccordions((prev) => ({
       ...prev,
       [key]: !prev[key],
