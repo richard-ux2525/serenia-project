@@ -4,12 +4,11 @@ import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 
 const weekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
+// Turns a Date into "2026-11-05" so it can be stored and compared as text
 function formatDate(date: Date) {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, '0'),
-    String(date.getDate()).padStart(2, '0'),
-  ].join('-')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
 }
 
 const clusters = [
@@ -36,10 +35,8 @@ const units = [
 
 function Dialog() {
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const today = new Date()
-    return new Date(today.getFullYear(), today.getMonth(), 1)
-  })
+  const today = new Date()
+  const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDate, setSelectedDate] = useState('')
   const [formNotice, setFormNotice] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
@@ -58,13 +55,12 @@ function Dialog() {
     const dialog = dialogRef.current
     if (!dialog) return
 
+    // Any element with data-tour-trigger opens this dialog
     const openFromTrigger = (event: MouseEvent) => {
-      if (!(event.target instanceof Element)) return
-      const trigger = event.target.closest('[data-tour-trigger]')
+      const trigger = (event.target as HTMLElement).closest('[data-tour-trigger]')
       if (!trigger) return
 
       event.preventDefault()
-      event.stopPropagation()
       setIsSuccess(false)
       setFormNotice('')
       if (!dialog.open) dialog.showModal()
@@ -88,12 +84,17 @@ function Dialog() {
   const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const daysInPreviousMonth = new Date(year, month, 0).getDate()
-  const calendarDays = Array.from({ length: 42 }, (_, index) => {
+
+  // 42 boxes = 6 weeks. Days from the last/next month are shown greyed out
+  const calendarDays = []
+  for (let index = 0; index < 42; index++) {
     const dayNumber = index - firstWeekday + 1
-    if (dayNumber < 1) return { day: daysInPreviousMonth + dayNumber, date: null, inMonth: false }
-    if (dayNumber > daysInMonth) return { day: dayNumber - daysInMonth, date: null, inMonth: false }
-    return { day: dayNumber, date: new Date(year, month, dayNumber), inMonth: true }
-  })
+    const inMonth = dayNumber >= 1 && dayNumber <= daysInMonth
+    calendarDays.push({
+      day: dayNumber < 1 ? daysInPreviousMonth + dayNumber : dayNumber > daysInMonth ? dayNumber - daysInMonth : dayNumber,
+      date: inMonth ? new Date(year, month, dayNumber) : null,
+    })
+  }
 
   const changeMonth = (amount: number) => {
     setCurrentMonth((current) => new Date(current.getFullYear(), current.getMonth() + amount, 1))
@@ -152,29 +153,24 @@ function Dialog() {
                     {weekdays.map((weekday) => <span key={weekday}>{weekday}</span>)}
                   </div>
                   <div className="tour-calendar-days">
-                    {calendarDays.map(({ day, date, inMonth }, index) => {
-                      if (!inMonth || !date) return <span key={`outside-${index}`} aria-hidden="true">{day}</span>
-
-                      const value = formatDate(date)
-                      const isSelected = selectedDate === value
-
-                      return (
+                    {calendarDays.map(({ day, date }, index) =>
+                      date ? (
                         <button
-                          key={value}
+                          key={formatDate(date)}
                           type="button"
-                          aria-label={date.toLocaleDateString('en-US', {
-                            weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-                          })}
-                          aria-pressed={isSelected}
+                          aria-label={date.toDateString()}
+                          aria-pressed={selectedDate === formatDate(date)}
                           onClick={() => {
-                            setSelectedDate(value)
+                            setSelectedDate(formatDate(date))
                             setFormNotice('')
                           }}
                         >
                           {day}
                         </button>
-                      )
-                    })}
+                      ) : (
+                        <span key={`outside-${index}`} aria-hidden="true">{day}</span>
+                      ),
+                    )}
                   </div>
                 </div>
 
@@ -265,7 +261,7 @@ function Dialog() {
             </div>
 
             <footer className="tour-request-footer">
-              {formNotice && (
+              {formNotice ? (
                 <p
                   role="status"
                   aria-live="polite"
@@ -275,7 +271,7 @@ function Dialog() {
                 >
                   {formNotice}
                 </p>
-              )}
+              ) : null}
               <button type="submit">Submit</button>
             </footer>
           </form>

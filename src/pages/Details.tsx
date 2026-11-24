@@ -163,7 +163,7 @@ export default function Details() {
   ]
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
+    <div className="flex h-dvh w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
       {/* LEFT SIDEBAR */}
       <title>Cluster Details - Serenia Real Estate</title>
       <Aside sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -201,7 +201,7 @@ export default function Details() {
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
             </button>
 
-            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 flex justify-between items-center gap-2.5 cursor-pointer p-1">
+            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 justify-between items-center gap-2.5 cursor-pointer p-1">
               <div className='flex items-center gap-2'>
                 <img
                 src={avatar}

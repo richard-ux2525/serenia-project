@@ -146,10 +146,10 @@ function Properties() {
           onSubmit={applyFilters}
           className="mx-auto mb-6 flex w-full max-w-7xl flex-col items-stretch justify-between gap-4 text-gray-700 sm:mb-10 lg:flex-row lg:items-center"
         >
-          {/* Left side: Location and Price dropdowns (desktop/tablet, cleanly collapsible on mobile) */}
-          <div className="hidden w-full flex-col items-center gap-4 sm:flex sm:flex-row sm:gap-6 lg:w-auto">
+          {/* Location and Price dropdowns: stacked on phones, side by side from tablets up */}
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-6 lg:w-auto">
             <label className="flex w-full cursor-pointer items-center gap-2 bg-white p-3 sm:w-auto">
-              <span className="font-normal text-gray-500">Location :</span>
+              <span className="shrink-0 font-normal text-gray-500">Location :</span>
               <select
                 name="cluster"
                 defaultValue={cluster}
@@ -157,7 +157,7 @@ function Properties() {
                   const form = e.currentTarget.form
                   if (form) form.requestSubmit()
                 }}
-                className="cursor-pointer bg-transparent py-2 pr-4 font-medium text-gray-900 focus:outline-none"
+                className="min-w-0 flex-1 cursor-pointer bg-transparent py-2 pr-4 font-medium text-gray-900 focus:outline-none"
               >
                 <option value="">All location</option>
                 {properties.map((property) => (
@@ -169,7 +169,7 @@ function Properties() {
             </label>
 
             <label className="flex w-full cursor-pointer items-center gap-2 bg-white p-3 sm:w-auto">
-              <span className="font-normal text-gray-500">Price :</span>
+              <span className="shrink-0 font-normal text-gray-500">Price :</span>
               <select
                 name="price"
                 defaultValue={price}
@@ -177,7 +177,7 @@ function Properties() {
                   const form = e.currentTarget.form
                   if (form) form.requestSubmit()
                 }}
-                className="cursor-pointer bg-transparent py-2 pr-4 font-medium text-gray-900 focus:outline-none"
+                className="min-w-0 flex-1 cursor-pointer bg-transparent py-2 pr-4 font-medium text-gray-900 focus:outline-none"
               >
                 <option value="">All price</option>
                 <option value="under-100000">Under $100,000</option>

@@ -14,25 +14,18 @@ function Brochure() {
     const dialog = dialogRef.current
     if (!dialog) return
 
+    // Any element with data-brochure-trigger opens this dialog
     const openFromTrigger = (event: MouseEvent) => {
-      if (!(event.target instanceof Element)) return
-
-      const trigger = event.target.closest('[data-brochure-trigger]')
+      const trigger = (event.target as HTMLElement).closest('[data-brochure-trigger]')
       if (!trigger) return
 
       event.preventDefault()
       if (!dialog.open) dialog.showModal()
     }
 
+    // Clicking the dark area around the box closes it
     const closeOnBackdrop = (event: MouseEvent) => {
-      const bounds = dialog.getBoundingClientRect()
-      const clickedOutside =
-        event.clientX < bounds.left ||
-        event.clientX > bounds.right ||
-        event.clientY < bounds.top ||
-        event.clientY > bounds.bottom
-
-      if (clickedOutside) dialog.close()
+      if (event.target === dialog) dialog.close()
     }
 
     document.addEventListener('click', openFromTrigger)
@@ -152,7 +145,7 @@ function Brochure() {
           </fieldset>
         </div>
         <footer className="brochure-request-footer">
-          {formNotice && <p role="status" aria-live="polite" className="mr-auto text-xs text-gray-600">{formNotice}</p>}
+          {formNotice ? <p role="status" aria-live="polite" className="mr-auto text-xs text-gray-600">{formNotice}</p> : null}
           <button type="submit">Submit request</button>
         </footer>
         </form>

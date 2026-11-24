@@ -76,7 +76,7 @@ const frequentlyAskedQuestions = [
 
 function Home() {
   const navigate = useNavigate();
-  // Tracks which FAQ index is open (starts with index 0 open by default)
+  // Which FAQ is open (0 = the first one, null = none)
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const searchProperties = (event: FormEvent<HTMLFormElement>) => {
@@ -89,7 +89,8 @@ function Home() {
       if (value) params.set(key, value);
     }
 
-    navigate(`/properties${params.size ? `?${params.toString()}` : ""}`);
+    const query = params.toString();
+    navigate(query ? `/properties?${query}` : "/properties");
   };
 
   return (
@@ -97,7 +98,7 @@ function Home() {
           <title>Serenia - Real Estate</title>
       <section className="home-hero flex h-110">
         <div className="w-1/2 p-8">
-          <div className="h-11.25 text-gold p-3 bg-gold-cream w-62.5 flex">
+          <div className="flex min-h-11.25 w-fit max-w-full items-center bg-gold-cream p-3 text-gold">
             <img src={pinHole} className="h-5 w-5 mx-2" alt="award icon" />
             <p className="font-medium font-body">Winner of the IPA 2025</p>
           </div>
@@ -208,7 +209,7 @@ function Home() {
         </div>
       </section>
 
-      {carouselItems.length > 0 && <Carousel slides={carouselItems} />}
+      <Carousel slides={carouselItems} />
 
       <section>
         <SignatureCommunities />
@@ -216,11 +217,11 @@ function Home() {
 
       <Facilities textContent="Facility & amenties" />
 
-      <section className="bg-slate min-h-250 flex justify-center items-center">
-        <div className="max-w-340 min-h-220 home-awards mx-auto grid bg-white shadow-box-lighter lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-8 p-6 pt-15 lg:gap-12 lg:p-15">
+      <section className="bg-slate flex items-center justify-center lg:min-h-250">
+        <div className="home-awards mx-auto grid w-full max-w-340 grid-cols-1 gap-8 bg-white p-6 pt-10 shadow-box-lighter sm:pt-15 lg:min-h-220 lg:grid-cols-2 lg:gap-12 lg:p-15">
           <div className="reveal grid grid-cols-1 min-w-0 gap-12 items-end">
             <div className="lg:col-span-5 pt-8 pb-12 px-6 sm:px-10 lg:pl-12 lg:pr-14 flex flex-col justify-start">
-              <p className="text-6xl font-medium text-ink-deep leading-[1.12] mb-7">
+              <p className="mb-7 text-4xl font-medium leading-[1.12] text-ink-deep sm:text-5xl lg:text-6xl">
                 Our awards &amp; <br /> global<br /> recognition
               </p>
               <p className="text-md leading-tight mb-10">
@@ -287,7 +288,7 @@ function Home() {
       </section>
 
       <section className="w-full text-center text-white p-5 bg-gallery">
-        <p className="reveal text-7xl p-7">Our gallery</p>
+        <p className="reveal p-5 text-5xl sm:p-7 sm:text-6xl lg:text-7xl">Our gallery</p>
         <p className="reveal delay-1 mx-auto max-w-xl px-4">Discover the beauty of Serenia in our <br /> gallery, featuring both its exterior and interior.</p>
         <div className="home-gallery-grid reveal mt-6 grid grid-cols-1 items-stretch gap-4 bg-gallery p-4 md:grid-cols-2 lg:grid-cols-3 sm:gap-5">
           {galleryItems.map(({ title, image }) => (
@@ -306,40 +307,33 @@ function Home() {
         </div>
       </section>
 
-      {/* --- FAQ SECTION WITH TERNARY OPERATOR --- */}
-      <section className="home-faq-section bg-slate px-4 py-20 sm:px-8 lg:px-16" aria-labelledby="home-faq-title">
-        <h2 id="home-faq-title" className="reveal mb-16 text-center text-4xl font-medium tracking-tight text-stone-900 sm:text-5xl lg:text-6xl leading-[1.15]">
+      {/* FAQ: clicking a question opens its answer */}
+      <section className="home-faq-section bg-slate px-4 py-12 sm:px-8 sm:py-20 lg:px-16" aria-labelledby="home-faq-title">
+        <h2 id="home-faq-title" className="reveal mb-10 text-center text-4xl font-medium tracking-tight text-stone-900 sm:mb-16 sm:text-5xl lg:text-6xl leading-[1.15]">
           Frequently <br /> asked <br /> questions
         </h2>
 
         <div className="reveal delay-1 mx-auto max-w-4xl space-y-3">
-          {frequentlyAskedQuestions.map(({ question, answer }, index) => {
-            const isOpen = openIndex === index;
-
-            return (
-              <div
-                key={question}
-                className="bg-white transition-all"
-              >
+          {frequentlyAskedQuestions.map(({ question, answer }, index) => (
+              <div key={question} className="bg-white transition-all">
                 <button
                   type="button"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="flex w-full cursor-pointer items-center justify-between gap-4 p-6 text-left text-base font-semibold text-stone-900 hover:bg-stone sm:text-lg"
                 >
                   <span>{question}</span>
                   <span className="grid h-8 w-8 shrink-0 place-items-center bg-stone-100 text-lg font-medium text-stone-700">
-                    {isOpen ? "−" : "+"}
+                    {openIndex === index ? "−" : "+"}
                   </span>
                 </button>
 
-                {isOpen && (
+                {openIndex === index ? (
                   <div className="border-t border-stone-100 p-6 text-sm sm:text-base leading-relaxed text-stone-600 whitespace-pre-line">
                     {answer}
                   </div>
-                )}
+                ) : null}
               </div>
-            );
-          })}
+          ))}
         </div>
       </section>
     </main>

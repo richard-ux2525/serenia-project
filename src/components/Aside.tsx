@@ -45,12 +45,12 @@ export default function Aside({ sidebarOpen = false, setSidebarOpen }: AsideProp
   return (
     <>
       {/* Mobile Backdrop */}
-      {sidebarOpen && (
+      {sidebarOpen ? (
         <div
           className="fixed inset-0 z-40 bg-black/40 lg:hidden"
           onClick={handleClose}
         />
-      )}
+      ) : null}
 
       {/* Logout Confirmation Dialog */}
       <LogoutDialog
@@ -153,7 +153,7 @@ export default function Aside({ sidebarOpen = false, setSidebarOpen }: AsideProp
                   />
                 </button>
 
-                {propertiesExpanded && (
+                {propertiesExpanded ? (
                   <div className="mt-1 ml-4 space-y-0.5 border-l border-gray-200 pl-3">
                     {[
                       { name: 'Liora estate', path: '/properties' },
@@ -170,7 +170,7 @@ export default function Aside({ sidebarOpen = false, setSidebarOpen }: AsideProp
                           handleClose()
                         }}
                         className={`block w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                          selectedProperty === item.name && (isActive('') || isActive('/admin/properties/aruna/details'))
+                          selectedProperty === item.name && isActive('/admin/properties/aruna/details')
                             ? 'font-semibold text-gray-900 bg-stone-100'
                             : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                         }`}
@@ -179,7 +179,7 @@ export default function Aside({ sidebarOpen = false, setSidebarOpen }: AsideProp
                       </Link>
                     ))}
                   </div>
-                )}
+                ) : null}
               </div>
 
               {/* Create Cluster Wizard */}
@@ -187,7 +187,7 @@ export default function Aside({ sidebarOpen = false, setSidebarOpen }: AsideProp
                 to="/admin/properties/create"
                 onClick={handleClose}
                 className={`flex items-center gap-3 px-3 py-2 text-xs font-medium transition-colors ${
-                  isActive('/create-cluster') || isActive('/properties/create') || isActive('/properties/aruna/edit')
+                  isActive('/admin/properties/create')
                     ? 'bg-[#53583C] text-white font-semibold'
                     : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                 }`}

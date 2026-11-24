@@ -4,7 +4,7 @@ import d3logo from '../assets/3D - All.png'
 
 function Updated() {
   return (
-    <main className="account-page bg-stone-200 min-h-screen flex flex-col justify-center items-center p-4 font-sans antialiased">
+    <main className="account-page bg-stone-200 min-h-dvh flex flex-col justify-center items-center p-4 font-sans antialiased">
            <title>Updated - Serenia Real Estate</title>
       <div>
         <Link to="/">

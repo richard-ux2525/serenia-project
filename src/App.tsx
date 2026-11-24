@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { Outlet, Route, Routes } from 'react-router-dom'
 import Login from './auth/Login'
 import Forgotpwd from './auth/Forgotpwd'
 import Resetpwd from './auth/Resetpwd'
@@ -19,7 +18,7 @@ import Aruna from './pages/Aruna'
 import Details from './pages/Details'
 import CreateCluster from './pages/CreateCluster'
 import HomePage from './pages/HomePage'
-import revealAnimaton from './components/hook'
+import useRevealAnimation from './components/hook'
 
 function SiteLayout() {
   return (
@@ -38,7 +37,7 @@ function StandaloneLayout() {
 }
 
 function App() {
-revealAnimaton()
+  useRevealAnimation()
   return (
     <Routes>
       {/* Public Site Layout with Navigation & Footer */}

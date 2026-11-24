@@ -77,7 +77,7 @@ const staggeredOffsets = [
 const clustersData = [
   {
     name: 'Liora estate',
-    cardClass: 'bg-white shadow-bocx p-10 transition-shadow duration-300 hover:shadow-md',
+    cardClass: 'bg-white shadow-bocx p-5 transition-shadow duration-300 hover:shadow-md sm:p-10',
     titleClass: 'text-3xl font-medium text-gray-900',
     items: [
       {
@@ -111,7 +111,7 @@ const clustersData = [
   },
   {
     name: 'Nava heights',
-    cardClass: 'bg-white shadow-bocx p-10 transition-shadow duration-300 hover:shadow-md',
+    cardClass: 'bg-white shadow-bocx p-5 transition-shadow duration-300 hover:shadow-md sm:p-10',
     titleClass: 'text-2xl font-bold text-gray-900',
     items: [
       {
@@ -138,7 +138,7 @@ const clustersData = [
   },
   {
     name: 'Aruna residence',
-    cardClass: 'bg-white p-10 shadow-bocx transition-shadow duration-300 hover:shadow-md',
+    cardClass: 'bg-white shadow-bocx p-5 transition-shadow duration-300 hover:shadow-md sm:p-10',
     titleClass: 'text-3xl font-medium text-gray-900',
     items: [
       {
@@ -165,7 +165,7 @@ const clustersData = [
   },
   {
     name: 'Velora park',
-    cardClass: 'bg-white shadow-bocx p-10 transition-shadow duration-300 hover:shadow-md',
+    cardClass: 'bg-white shadow-bocx p-5 transition-shadow duration-300 hover:shadow-md sm:p-10',
     titleClass: 'text-2xl font-bold text-gray-900',
     items: [
       {
@@ -192,7 +192,7 @@ const clustersData = [
   },
   {
     name: 'Seraya grove',
-    cardClass: 'bg-white shadow-bocx p-10 transition-shadow duration-300 hover:shadow-md',
+    cardClass: 'bg-white shadow-bocx p-5 transition-shadow duration-300 hover:shadow-md sm:p-10',
     titleClass: 'text-2xl font-bold text-gray-900',
     items: [
       {
@@ -286,14 +286,14 @@ function Amenities() {
       `}</style>
 
       <section className="max-w-full overflow-hidden pt-16 pb-12 text-center">
-        <h1 className="mx-auto max-w-2xl text-7xl font-medium leading-[1.1] tracking-tight text-gray-900">
+        <h1 className="mx-auto max-w-2xl px-4 text-4xl font-medium leading-[1.1] tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
           Facilities
           <br />
           designed around
           <br />
           your needs
         </h1>
-        <p className="mx-auto mt-6 max-w-lg text-[17px] leading-relaxed text-gray-800">
+        <p className="mx-auto mt-6 max-w-lg px-4 text-base leading-relaxed text-gray-800 sm:text-[17px]">
           Discover thoughtfully planned amenities and modern <br /> facilities designed to support a
           vibrant, comfortable, <br /> and connected lifestyle within Serenia.
         </p>
@@ -304,7 +304,7 @@ function Amenities() {
             setIsPaused(false)
             setHoveredCard(null)
           }}
-          className="serenia-marquee-mask flex h-210 w-full justify-center gap-3 overflow-hidden"
+          className="serenia-marquee-mask flex h-130 w-full justify-center gap-3 overflow-hidden sm:h-170 lg:h-210"
         >
           {heroColumns.map((column, colIdx) => {
             const loopedImages = [...column.images, ...column.images]
@@ -355,9 +355,9 @@ function Amenities() {
         </section>
       </section>
 
-      <section className="max-w-full -translate-y-40 bg-stone pt-20">
-        <div className="mb-16 text-center">
-          <h1 className="text-6xl font-semibold tracking-tight text-gray-900">
+      <section className="max-w-full -translate-y-16 bg-stone pt-12 sm:-translate-y-28 sm:pt-16 lg:-translate-y-40 lg:pt-20">
+        <div className="mb-10 px-4 text-center sm:mb-16">
+          <h1 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
             General facilities
           </h1>
           <p className="text-md mx-auto mt-5 max-w-sm leading-relaxed text-gray-800">
@@ -366,7 +366,7 @@ function Amenities() {
           </p>
         </div>
         <Facilities />
-        <section className="border-t border-gray-100 bg-[#f9f9f9] px-6 py-20 lg:px-16">
+        <section className="border-t border-gray-100 bg-[#f9f9f9] px-4 py-12 sm:px-6 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-350">
             <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <h2 className="max-w-sm text-start text-4xl font-medium leading-tight tracking-tight text-gray-900 lg:text-4xl">
@@ -389,49 +389,50 @@ function Amenities() {
                       {cluster.items.map((item, idx) => {
                         const key = `${cluster.name}-${idx}`
                         const isOpen = !!openAccordions[key]
-                        const isLast = idx === cluster.items.length - 1
 
-                        return isOpen ? (
+                        return (
                           <div
                             key={key}
-                            className={`p-6 transition-colors duration-200 ${!isLast ? 'border-b border-gray-100' : ''}`}
+                            className={`${idx !== cluster.items.length - 1 ? 'border-b border-gray-100' : ''} ${
+                              isOpen ? 'p-4 sm:p-6' : 'group px-4 py-4 hover:bg-slate-50 sm:px-6'
+                            }`}
                           >
                             <div
                               onClick={() => toggleAccordion(key)}
-                              className="mb-3 flex cursor-pointer items-center justify-between"
+                              className={`flex cursor-pointer items-center justify-between gap-3 ${isOpen ? 'mb-3' : ''}`}
                             >
-                              <h4 className="text-3xl font-medium text-gray-900">{item.title}</h4>
-                              <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-600 transition-colors hover:bg-slate-200">
-                                <Minus className="h-3.5 w-3.5" />
+                              {isOpen ? (
+                                <h4 className="text-xl font-medium text-gray-900 sm:text-3xl">{item.title}</h4>
+                              ) : (
+                                <span className="text-sm font-semibold text-gray-800 transition-transform duration-200 group-hover:translate-x-1">
+                                  {item.title}
+                                </span>
+                              )}
+                              <div
+                                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded bg-slate-100 text-slate-600 transition-colors ${
+                                  isOpen ? 'hover:bg-slate-200' : 'group-hover:bg-[#424d31] group-hover:text-white'
+                                }`}
+                              >
+                                {isOpen ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
                               </div>
                             </div>
-                            <p className="mb-4 max-w-xl text-justify text-sm leading-relaxed text-gray-500">
-                              {item.description}
-                            </p>
-                            {item.image && (
-                              <div className="h-65 w-full overflow-hidden bg-slate-100 sm:h-65">
-                                <img
-                                  src={item.image}
-                                  alt={item.title}
-                                  className="h-full w-full object-contain transition-transform duration-500 hover:scale-[1.02]"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div
-                            key={key}
-                            onClick={() => toggleAccordion(key)}
-                            className={`group flex cursor-pointer items-center justify-between px-6 py-4 transition-colors duration-200 ${
-                              !isLast ? 'border-b border-gray-100' : ''
-                            } hover:bg-slate-50`}
-                          >
-                            <span className="text-sm font-semibold text-gray-800 transition-transform duration-200 group-hover:translate-x-1">
-                              {item.title}
-                            </span>
-                            <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-600 transition-colors group-hover:bg-[#424d31] group-hover:text-white">
-                              <Plus className="h-3.5 w-3.5" />
-                            </div>
+
+                            {isOpen ? (
+                              <>
+                                <p className="mb-4 max-w-xl text-justify text-sm leading-relaxed text-gray-500">
+                                  {item.description}
+                                </p>
+                                {item.image ? (
+                                  <div className="h-48 w-full overflow-hidden bg-slate-100 sm:h-65">
+                                    <img
+                                      src={item.image}
+                                      alt={item.title}
+                                      className="h-full w-full object-contain transition-transform duration-500 hover:scale-[1.02]"
+                                    />
+                                  </div>
+                                ) : null}
+                              </>
+                            ) : null}
                           </div>
                         )
                       })}

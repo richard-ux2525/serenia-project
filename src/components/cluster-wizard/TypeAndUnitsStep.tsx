@@ -602,7 +602,7 @@ export default function TypeAndUnitsStep({
                       checked ? 'bg-white text-gray-900' : 'border border-gray-300'
                     }`}
                   >
-                    {checked && <Check className="h-3 w-3 stroke-[3]" />}
+                    {checked ? <Check className="h-3 w-3 stroke-[3]" /> : null}
                   </div>
                   <span className="truncate">{opt}</span>
                 </button>
@@ -635,7 +635,7 @@ export default function TypeAndUnitsStep({
                       checked ? 'bg-white text-gray-900' : 'border border-gray-300'
                     }`}
                   >
-                    {checked && <Check className="h-3 w-3 stroke-[3]" />}
+                    {checked ? <Check className="h-3 w-3 stroke-[3]" /> : null}
                   </div>
                   <span className="truncate">{opt}</span>
                 </button>
@@ -666,7 +666,7 @@ export default function TypeAndUnitsStep({
                       checked ? 'bg-white text-gray-900' : 'border border-gray-300'
                     }`}
                   >
-                    {checked && <Check className="h-3 w-3 stroke-[3]" />}
+                    {checked ? <Check className="h-3 w-3 stroke-[3]" /> : null}
                   </div>
                   <span className="truncate">{opt}</span>
                 </button>

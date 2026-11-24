@@ -89,7 +89,7 @@ export default function GroundFloor() {
   const ActiveHotspotIcon = activeHotspot?.Icon;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#bcb4aa] font-sans text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#bcb4aa] font-sans text-white">
         <title>GroundFloor - Serenia Real Estate</title>
       {/* Top navigation */}
       <header className="absolute inset-x-4 top-4 z-20 flex h-11 items-center justify-between">
@@ -136,7 +136,7 @@ export default function GroundFloor() {
       {/* Ground floor panorama */}
       <section
         aria-label="Ground floor 360 preview"
-        className="relative min-h-screen w-full bg-cover bg-center"
+        className="relative min-h-dvh w-full bg-cover bg-center"
         style={{
           backgroundImage: `url("${groundFloor}")`,
         }}
@@ -175,7 +175,7 @@ export default function GroundFloor() {
         })}
 
         {/* Selected hotspot information */}
-        {activeHotspot && ActiveHotspotIcon && (
+        {activeHotspot && ActiveHotspotIcon ? (
           <div
             className="absolute z-20 flex max-w-[310px] -translate-x-1/2 -translate-y-full items-center gap-3 bg-white px-4 py-3 text-[#222] shadow-xl"
             style={{
@@ -199,7 +199,7 @@ export default function GroundFloor() {
               </strong>
             </span>
           </div>
-        )}
+        ) : null}
 
         {/* Room navigation shortcuts */}
         {roomLinks.map(({ label, x, y }) => (

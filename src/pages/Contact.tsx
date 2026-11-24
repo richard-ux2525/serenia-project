@@ -3,6 +3,8 @@ import type { FormEvent } from "react"
 import { IdCard, Mail, Phone } from "lucide-react"
 import { Buttons, contactImage } from "../imports"
 import Nav from '../components/Nav'
+import Dialog from '../components/Dialog'
+
 function Contact() {
   const [formNotice, setFormNotice] = useState('')
 
@@ -15,6 +17,7 @@ function Contact() {
     <main>
       <title> Contact Us - Serenia Real Estate</title>
       <Nav />
+      <Dialog />
       <section className="reveal">
         <div>
           <img
@@ -26,13 +29,13 @@ function Contact() {
       </section>
       <section className="bg-[#f9f9f9]">
         <div className="mx-auto grid max-w-full grid-cols-1 lg:grid-cols-2">
-          <div className="reveal bg-white p-8 shadow-box lg:p-12">
-            <section className="bg-white px-6 py-16 lg:py-20">
-              <h1 className="text-4xl font-medium leading-tight tracking-tight text-gray-900 md:text-6xl lg:text-7xl">
+          <div className="reveal bg-white p-4 shadow-box sm:p-8 lg:p-12">
+            <section className="bg-white px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+              <h1 className="text-4xl font-medium leading-tight tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-7xl">
                 Let’s connect <br />
                 with us
               </h1>
-              <p className="mt-6 text-lg font-normal leading-relaxed text-gray-500 lg:text-xl">
+              <p className="mt-6 text-base font-normal leading-relaxed text-gray-500 sm:text-lg lg:text-xl">
                 Discover Serenia up close. Whether you want to ask a question or schedule a private
                 tour, our team is ready to assist you.
               </p>
@@ -42,7 +45,7 @@ function Contact() {
                 <Mail aria-hidden="true" className="text-gray-800" />
                 <div>
                   <p className="mb-1 text-sm text-gray-500">Email address</p>
-                  <a href="mailto:sereniasupport@serenia.com" className="block whitespace-nowrap text-xs font-medium text-gray-900 hover:text-olive focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive">
+                  <a href="mailto:sereniasupport@serenia.com" className="block break-all text-xs font-medium text-gray-900 hover:text-olive focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive">
                     sereniasupport@serenia.com
                   </a>
                 </div>
@@ -51,7 +54,7 @@ function Contact() {
                 <Phone aria-hidden="true" className="text-gray-800" />
                 <div>
                   <p className="mb-1 text-sm text-gray-500">Phone number</p>
-                  <a href="tel:+13453345005" className="block whitespace-nowrap text-xs font-medium text-gray-900 hover:text-olive focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive">
+                  <a href="tel:+13453345005" className="block break-all text-xs font-medium text-gray-900 hover:text-olive focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive">
                     (+1) 345 - 3345 - 005
                   </a>
                 </div>
@@ -59,7 +62,7 @@ function Contact() {
             </div>
           </div>
 
-          <div className="reveal delay-1 contact-form-column bg-[#f9f9f9] p-15 shadow-box">
+          <div className="reveal delay-1 contact-form-column bg-[#f9f9f9] p-4 shadow-box sm:p-8 lg:p-15">
             <div className="bg-white p-4 shadow-box">
               <div className="mb-3 flex h-10 w-full items-center gap-3 border-b border-black/10 p-2 text-[20px]">
                 <IdCard aria-hidden="true" className="text-gray-800" />
@@ -130,7 +133,7 @@ function Contact() {
                   btnText="Submit"
                   btnstyle="primary-button w-full rounded-none bg-olive px-4 py-3 font-medium text-white hover:bg-olive-dark"
                 />
-                {formNotice && <p role="status" aria-live="polite" className="text-sm text-gray-600">{formNotice}</p>}
+                {formNotice ? <p role="status" aria-live="polite" className="text-sm text-gray-600">{formNotice}</p> : null}
               </form>
             </div>
           </div>

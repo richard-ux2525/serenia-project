@@ -167,7 +167,7 @@ function SignatureCommunities() {
 
       <div className="mx-auto mb-12 max-w-[1312px] text-center">
 
-        <h2 className="text-xs font-medium tracking-tight text-stone-900 sm:text-4xl lg:text-[]">
+        <h2 className="text-3xl font-medium tracking-tight text-stone-900 sm:text-4xl">
           Discover signature <br/> communities
         </h2>
 
@@ -248,43 +248,17 @@ function SignatureCommunities() {
                   className="h-full w-full select-none object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                 />
 
-
-
-                {/* IMAGE INDICATORS */}
- {/* <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/30 px-3 py-2 backdrop-blur-md">
-
-                  {current.images.map((_, index) => (
-
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => setActivePhoto(index)}
-                      aria-label={`Show photo ${index + 1}`}
-
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        activePhoto === index
-                          ? 'w-7 bg-white'
-                          : 'w-1.5 bg-white/50 hover:bg-white'
-                      }`}
-                    />
-
-                  ))}
-
-                </div> */}
-
-               
               </div>
 
 
               {/* RIGHT SIDE: DETAILS */}
 
               <div className="flex flex-col justify-between bg-white px-5 py-8 sm:px-9 sm:py-10 lg:px-12 lg:py-12">
-               <div>
+                <div>
                   {/* BADGE */}
 
                   <div className="mb-6 inline-flex items-center gap-2 bg-gold-cream px-3 py-2 text-sm font-semibold tracking-wider text-gold">
                     {current.badge}
-
                   </div>
 
                   {/* TITLE */}
@@ -292,18 +266,16 @@ function SignatureCommunities() {
                   <p className="text-2xl font-medium tracking-tight text-stone-900 sm:text-4xl">
                     {current.title}
                   </p>
+
                   {/* DESCRIPTION */}
 
                   <p className="mt-3 max-w-lg text-sm leading-7 text-stone-800">
                     {current.description}
                   </p>
-
                 </div>
 
-                
-
-<div>
-    {/* SPECIFICATIONS */}
+                <div>
+                  {/* SPECIFICATIONS */}
 
                   <div className="space-y-2">
 
@@ -311,68 +283,54 @@ function SignatureCommunities() {
 
                     <div className="flex items-center gap-4">
                       <img src={bedRoom} alt="" className="h-5 w-5 text-stone-600" />
-                      <div>
-                        <p className="mt-1 text-sm font-medium text-stone-800">
-                          {current.beds}
-                        </p>
-                      </div>
+                      <p className="mt-1 text-sm font-medium text-stone-800">
+                        {current.beds}
+                      </p>
                     </div>
-
 
                     {/* AMENITIES */}
 
                     <div className="flex items-center gap-4">
                       <img src={facilites} alt="" className="h-5 w-5 text-stone-600" />
-                      <div>
-                        <p className="mt-1 text-sm font-medium text-stone-800">
-                          {current.facility}
-                        </p>
-                      </div>
+                      <p className="mt-1 text-sm font-medium text-stone-800">
+                        {current.facility}
+                      </p>
                     </div>
-
 
                     {/* LOCATION */}
 
                     <div className="flex items-center gap-4">
                       <img src={boulevard} alt="" className="h-5 w-5 text-stone-600" />
-                      <div>
-                        <p className="mt-1 text-sm font-medium text-stone-800">
-                          {current.location}
-                        </p>
-                      </div>
+                      <p className="mt-1 text-sm font-medium text-stone-800">
+                        {current.location}
+                      </p>
                     </div>
-                </div>
-                {/* PRICE AND LINK */}
+                  </div>
+
+                  {/* PRICE AND LINK */}
 
                   <div className="mt-12 flex flex-wrap items-end justify-between gap-5 border-t border-stone-200 pt-7">
 
-                  <div>
+                    <div>
+                      <p className="text-sm font-medium text-stone-400">
+                        Starts from
+                      </p>
 
-                    <p className="text-sm font-medium text-stone-400">
-                      Starts from
-                    </p>
+                      <p className="mt-2 text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+                        {current.price}
+                      </p>
+                    </div>
 
-                    <p className="mt-2 text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
-                      {current.price}
-                    </p>
+                    <Link
+                      to={current.to}
+                      className="group inline-flex items-center gap-3 bg-stone px-6 py-3.5 font-medium transition duration-300 hover:bg-olive hover:text-white"
+                    >
+                      Discover
+                      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </Link>
 
                   </div>
-
-
-                  <Link
-                    to={current.to}
-                    className="group inline-flex items-center gap-3 bg-stone px-6 py-3.5 font-medium transition duration-300 hover:bg-olive hover:text-white"
-                  >
-
-                    Discover
-
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-
-                  </Link>
-
                 </div>
-
-</div>
               </div>
 
             </motion.div>
@@ -391,19 +349,13 @@ function SignatureCommunities() {
         {/* PROGRESS BAR */}
 
         <div className="h-[3px] rounded flex-1 overflow-hidden bg-stone-300">
-
           <div
             className="h-full bg-stone-900 transition-all duration-500 ease-out"
-            style={{
-              width: `${progress}%`,
-            }}
+            style={{ width: `${progress}%` }}
           />
-
         </div>
 
-
         <div className="flex items-center gap-2">
-
 
           {/* PREVIOUS */}
 
@@ -413,11 +365,8 @@ function SignatureCommunities() {
             aria-label="Previous community"
             className="flex h-11 w-11 items-center justify-center bg-white text-stone-700 transition hover:border-stone-900 hover:bg-olive hover:text-white"
           >
-
             <ArrowLeft className="h-5 w-5" />
-
           </button>
-
 
           {/* NEXT */}
 
@@ -427,9 +376,7 @@ function SignatureCommunities() {
             aria-label="Next community"
             className="flex h-11 w-11 items-center justify-center bg-white text-stone-700 transition hover:border-stone-900 hover:bg-olive hover:text-white"
           >
-
             <ArrowRight className="h-5 w-5" />
-
           </button>
 
         </div>

@@ -61,7 +61,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
+    <div className="flex h-dvh w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
       {/* Mobile Sidebar Overlay */}
       <title>Dashboard - Serenia Real Estate</title>
 
@@ -91,7 +91,7 @@ export default function HomePage() {
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
             </button>
 
-            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 flex justify-between items-center gap-2.5 cursor-pointer p-1">
+            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 justify-between items-center gap-2.5 cursor-pointer p-1">
               <div className='flex items-center gap-2'>
                 <img
                 src={profileImage}
@@ -431,12 +431,12 @@ export default function HomePage() {
                 {/* Bar Chart relative area */}
                 <div className="relative mt-6 h-56 w-full flex items-end justify-between px-2 pb-6 border-b border-gray-200">
                   {/* Tooltip Banner over active bar */}
-                  {hoveredBar === 'Nava heights' && (
+                  {hoveredBar === 'Nava heights' ? (
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-black text-white px-3 py-1.5 text-center shadow-lg border border-gray-800 z-10">
                       <span className="block text-[10px] text-gray-300">Nava heights</span>
                       <span className="block text-xs font-bold">36 Tour request</span>
                     </div>
-                  )}
+                  ) : null}
 
                   {tourBarData.map((bar) => {
                     const isSelected = hoveredBar === bar.label

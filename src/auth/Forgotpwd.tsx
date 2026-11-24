@@ -19,7 +19,7 @@ function Forgotpwd() {
   }
 
   return (
-    <main className="account-page bg-stone-200 px-2 sm:px-4 min-h-screen flex flex-col justify-center items-center font-sans antialiased">
+    <main className="account-page bg-stone-200 px-2 sm:px-4 min-h-dvh flex flex-col justify-center items-center font-sans antialiased">
       <div className="mb-6">
         <Link to="/">
           <img src={logo} alt="logo" className="h-6 mx-auto" />
@@ -64,7 +64,7 @@ function Forgotpwd() {
               Didn&apos;t get the link? Contact us
             </Link>
           </div>
-          {formNotice && <p role="status" aria-live="polite" className="mt-3 text-xs font-semibold text-emerald-700 bg-emerald-50 p-2 border border-emerald-200">{formNotice}</p>}
+          {formNotice ? <p role="status" aria-live="polite" className="mt-3 text-xs font-semibold text-emerald-700 bg-emerald-50 p-2 border border-emerald-200">{formNotice}</p> : null}
         </form>
 
         <div className="mt-6 flex min-h-16 w-full items-start gap-2 border border-[#F0CD86] bg-[#FFF8EB] p-3">

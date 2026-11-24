@@ -44,7 +44,7 @@ function Colors() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f7f5] px-4 py-8 text-[#212121] sm:px-6 lg:py-12">
+    <main className="min-h-dvh bg-[#f7f7f5] px-4 py-8 text-[#212121] sm:px-6 lg:py-12">
       <section className="mx-auto w-full max-w-5xl border border-stone-200 bg-white">
         <header className="flex flex-col justify-between gap-4 border-b border-stone-200 bg-[#fbfbfa] px-5 py-5 sm:flex-row sm:items-center sm:px-7">
           <div>
@@ -75,12 +75,12 @@ function Colors() {
                     {(['linear', 'radial'] as const).map((type) => <button key={type} type="button" onClick={() => setGradientType(type)} aria-pressed={gradientType === type} className={`border px-3 py-2 text-sm capitalize transition-colors ${gradientType === type ? 'border-[#56593B]/50 bg-[#f2f3ed] text-[#434930]' : 'border-stone-200 bg-white text-gray-700 hover:bg-stone-100'}`}>{type}</button>)}
                   </div>
                 </div>
-                {gradientType === 'linear' && (
+                {gradientType === 'linear' ? (
                   <div>
                     <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-gray-600"><label htmlFor="gradient-angle">Angle</label><span className="text-[#56593B]">{angle}°</span></div>
                     <input id="gradient-angle" type="range" min="0" max="360" value={angle} onChange={(event) => setAngle(Number(event.target.value))} className="w-full accent-[#56593B]" />
                   </div>
-                )}
+                ) : null}
               </section>
 
               <section className="space-y-3">
@@ -119,7 +119,7 @@ function Colors() {
         </div>
       </section>
 
-      {toast && <div role="status" className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-[#242424] px-4 py-3 text-sm text-white shadow-lg"><Check aria-hidden="true" className="h-4 w-4 text-[#c4c7b2]" />{toast}</div>}
+      {toast ? <div role="status" className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-[#242424] px-4 py-3 text-sm text-white shadow-lg"><Check aria-hidden="true" className="h-4 w-4 text-[#c4c7b2]" />{toast}</div> : null}
     </main>
   )
 }

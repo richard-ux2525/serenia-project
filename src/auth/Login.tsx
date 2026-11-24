@@ -111,11 +111,11 @@ function Login() {
               </div>
 
               {/* Form Notice */}
-              {formNotice && (
+              {formNotice ? (
                 <p role="status" aria-live="polite" className="text-xs text-red-600 font-medium">
                   {formNotice}
                 </p>
-              )}
+              ) : null}
 
               {/* Submit Button */}
               <button

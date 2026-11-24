@@ -32,7 +32,7 @@ function Resetpwd() {
   }
 
   return (
-    <main className="account-page bg-stone-200 px-3 sm:px-0 min-h-screen flex flex-col justify-center items-center font-sans antialiased">
+    <main className="account-page bg-stone-200 px-3 sm:px-0 min-h-dvh flex flex-col justify-center items-center font-sans antialiased">
      <title>Reset Password - Serenia Real Estate</title>
       <div>
         <Link to="/">
@@ -126,7 +126,7 @@ function Resetpwd() {
                 {showConfirmPassword ? <EyeOff aria-hidden="true" className="h-4 w-4" /> : <Eye aria-hidden="true" className="h-4 w-4" />}
               </button>
             </div>
-            {canCheckConfirmation && (
+            {canCheckConfirmation ? (
               <p
                 className={`mt-2 flex items-center gap-1.5 text-xs ${
                   passwordsMatch ? 'text-emerald-700 font-semibold' : 'text-rose-600'
@@ -146,15 +146,15 @@ function Resetpwd() {
                 </span>
                 <span>{passwordsMatch ? 'Passwords match' : 'Passwords do not match'}</span>
               </p>
-            )}
+            ) : null}
           </div>
 
           <hr className="border-stone-200" />
-          {formNotice && (
+          {formNotice ? (
             <p role="status" aria-live="polite" className="text-xs font-semibold text-emerald-700 bg-emerald-50 p-2 border border-emerald-200">
               {formNotice}
             </p>
-          )}
+          ) : null}
           <button
             type="submit"
             disabled={!requirements.every(({ valid }) => valid) || !passwordsMatch}

@@ -37,7 +37,7 @@ export default function GroundFloorDialog({
       className="absolute bottom-2 right-2 top-auto z-30 flex h-[72vh] w-[calc(100%-1rem)] flex-col overflow-hidden bg-white text-neutral-900 shadow-2xl sm:bottom-4 sm:right-4 sm:top-[72px] sm:h-auto sm:w-[448px]"
     >
       <div className="relative grid grid-cols-2 gap-1 bg-white p-3">
-        <div className="w-107 p-2 flex bg-stone text-center mt-15">
+        <div className="col-span-2 mt-15 flex w-full bg-stone p-2 text-center">
             <div className="bg-white w-1/2 px-3 py-3 text-sm font-medium shadow-sm">Ground floor</div>
         <div className="bg-neutral-100 w-1/2 px-3 py-3 text-sm text-neutral-500">Upper floor</div>
         </div>

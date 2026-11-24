@@ -88,7 +88,7 @@ export default function HouseMediaStep({
           </div>
 
           {/* Upload Progress Status Pill */}
-          {data.coverImage && (
+          {data.coverImage ? (
             <div className="flex items-center justify-between border border-gray-200 bg-white p-3 shadow-xs">
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center bg-emerald-50 text-emerald-600 border border-emerald-100">
@@ -111,7 +111,7 @@ export default function HouseMediaStep({
                 Remove
               </button>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     )

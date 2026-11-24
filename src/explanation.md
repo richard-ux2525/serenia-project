@@ -652,3 +652,256 @@ If the user prefers reduced motion, all animations are effectively disabled via 
 
 This keeps every page easy to scan.
 
+
+
+---
+
+# Update: Simplified Code and Responsive Fixes
+
+This section explains every piece of new code added during the cleanup, one line at a time. The older sections above still describe the pages, but these things changed:
+
+- `ClusterSelector.tsx`, `Tour.tsx` and `ButtonWhite.tsx` were deleted because nothing used them, and their exports were removed from `imports.ts`.
+- `revealAnimaton` is now `useRevealAnimation`, and the unused `framer-motion` import in `hook.ts` is gone.
+- `SignatureCarousel.tsx` no longer uses framer-motion (the drag and spring animation was replaced by a simple fade plus swipe).
+- About half of `index.css` (rules for class names that no component uses) was removed.
+- Every `{condition && (...)}` in the JSX is now `{condition ? (...) : null}`.
+- The navigation menu button now appears below 1024px (phones and tablets, including iPad portrait) instead of below 768px.
+
+## 1. `components/hook.ts` – reveal on scroll
+
+```ts
+function useRevealAnimation() {
+  const { pathname } = useLocation()
+```
+- Defines the hook. A hook is a function whose name starts with `use`, which lets React track it.
+- `useLocation()` gives the current page address. We keep only `pathname` (for example `/gallery`).
+
+```ts
+  useEffect(() => {
+    const items = document.querySelectorAll('.reveal:not(.is-visible)')
+```
+- `useEffect` runs after the page is drawn. The `[pathname]` at the end makes it run again on every page change.
+- `querySelectorAll` collects every element with the class `reveal` that has not already been revealed.
+
+```ts
+    const showAll = () => items.forEach((item) => item.classList.add('is-visible'))
+```
+- A small function that gives each item the class `is-visible`, which is what makes it appear (see `.reveal.is-visible` in the CSS).
+
+```ts
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      showAll()
+      return
+    }
+```
+- `matchMedia(...).matches` is `true` when the phone or computer is set to "reduce motion".
+- `'IntersectionObserver' in window` checks that the browser supports the scroll watcher.
+- If either case applies, everything is shown at once and the effect stops with `return`.
+
+```ts
+    const observer = new IntersectionObserver((entries) => { ... }, { threshold: 0.05 })
+```
+- An `IntersectionObserver` tells us when an element enters the screen. `entries` is the list of elements that changed.
+- `threshold: 0.05` means "5% visible is enough". The old value needed more, which could keep very tall sections invisible on small phones.
+
+```ts
+entries.forEach((entry) => {
+  if (entry.isIntersecting) {
+    entry.target.classList.add('is-visible')
+    observer.unobserve(entry.target)
+  }
+})
+```
+- For each element that is on screen: add `is-visible`, then stop watching it so it only animates once.
+
+```ts
+    items.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+```
+- Start watching every item. The returned function is the cleanup: React runs it when the page changes, so old watchers do not pile up.
+
+## 2. `components/Nav.tsx` – simple mobile menu
+
+```ts
+const [isOpen, setIsOpen] = useState(false)
+const { pathname } = useLocation()
+const isActive = (path: string) => pathname === path
+```
+- `isOpen` remembers whether the menu is open. It starts closed.
+- `isActive('/gallery')` is `true` when you are on that page; it draws the underline on the desktop links.
+
+```ts
+useEffect(() => { setIsOpen(false) }, [pathname])
+```
+- Closes the menu every time the page changes.
+
+```ts
+document.body.style.overflow = isOpen ? 'hidden' : ''
+```
+- Ternary: while the menu is open the page behind it cannot scroll; otherwise the style is cleared.
+
+```ts
+const closeOnWide = () => (window.innerWidth >= 1024 ? setIsOpen(false) : null)
+window.addEventListener('resize', closeOnWide)
+```
+- If an iPad is rotated to landscape (1024px or wider) while the menu is open, close it, because the desktop links appear instead.
+- `addEventListener('resize', ...)` runs this function whenever the window size changes.
+
+```ts
+return () => {
+  document.body.style.overflow = ''
+  window.removeEventListener('resize', closeOnWide)
+}
+```
+- Cleanup: give scrolling back and remove the listener.
+
+In the JSX:
+- `hidden lg:block` / `hidden lg:flex` / `lg:hidden` show the desktop links only from 1024px and the menu button only below that.
+- `isOpen ? 'visible opacity-100 duration-700' : 'invisible opacity-0 duration-500'` fades the panel in slowly and out a bit faster. The menu is always on the page; only these classes change.
+- `isOpen ? 'translate-x-0 ...' : 'translate-x-full ...'` slides the white panel in from the right.
+- `{isActive('/amenities') ? (<div .../>) : null}` shows the underline only on the active page.
+
+## 3. `components/Dropdown.tsx`
+
+- The "click outside to close" code (`useRef` plus `useEffect`) was removed. The blurred backdrop already closes the menu when clicked.
+- `{isOpen ? (...) : null}` and `{mobileOpen ? (...) : null}` replace `&&`.
+- `activeIndex === index ? 'bg-white text-black' : '...'` replaces the extra `isClusterActive` variable.
+- The desktop menu card is now `fixed left-1/2 top-[4.5rem] w-[min(75rem,calc(100vw-2rem))] -translate-x-1/2`:
+  - `fixed` pins it to the screen below the navbar.
+  - `left-1/2` plus `-translate-x-1/2` centres it.
+  - `min(75rem, 100vw - 2rem)` means "at most 1200px wide, but never wider than the screen minus 1rem each side". The old fixed width (1200px) overflowed every tablet.
+
+## 4. `components/Dialog.tsx` (tour request)
+
+```ts
+function formatDate(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+```
+- `getMonth()` counts from 0, so we add 1. `padStart(2, '0')` makes `5` into `05`. The result looks like `2026-11-05`.
+
+```ts
+const today = new Date()
+const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
+```
+- `currentMonth` is always the 1st day of the month being shown.
+
+```ts
+for (let index = 0; index < 42; index++) {
+  const dayNumber = index - firstWeekday + 1
+  const inMonth = dayNumber >= 1 && dayNumber <= daysInMonth
+  calendarDays.push({ day: ..., date: inMonth ? new Date(year, month, dayNumber) : null })
+}
+```
+- A calendar has 6 rows x 7 columns = 42 boxes. `firstWeekday` is how many boxes come before the 1st.
+- `dayNumber` below 1 or above `daysInMonth` belongs to the neighbouring month; those boxes get `date: null` and are drawn grey.
+- The nested ternary `dayNumber < 1 ? previous : dayNumber > daysInMonth ? next : dayNumber` picks the number printed in each box.
+
+```tsx
+date ? (<button ...>) : (<span ...>)
+```
+- Real days are buttons; neighbouring-month days are plain text.
+
+```ts
+const trigger = (event.target as HTMLElement).closest('[data-tour-trigger]')
+```
+- `closest` walks up from the clicked element and finds the nearest parent with `data-tour-trigger`. That is how every "Request tour" button opens this dialog.
+
+## 5. `components/Brochure.tsx` and `components/LogoutDialog.tsx`
+
+- Brochure: `if (event.target === dialog) dialog.close()` closes the dialog when the dark area around it is clicked (the click target is the dialog itself, not something inside it).
+- LogoutDialog: `useEffect(() => { dialogRef.current?.showModal() }, [])` opens the dialog once it is on the page. The `[]` means "only once". The component returns `isOpen ? (<dialog>...) : null`, so it only exists while it should be open.
+- The fixed `h-[493px] w-100` was replaced by `w-[calc(100vw-2rem)] max-w-md`, which is "almost the full phone width, but never wider than 28rem".
+
+## 6. `components/Carousel.tsx`
+
+```ts
+const [mainRef, mainApi] = useEmblaCarousel({ loop: true })
+const [thumbsRef, thumbsApi] = useEmblaCarousel({ containScroll: 'keepSnaps', dragFree: true, loop: true })
+```
+- Two sliders: the big picture and the thumbnail strip. `ref` goes on the element, `api` lets us control it.
+
+```ts
+const onSelect = () => {
+  const index = mainApi.selectedScrollSnap()
+  setSelectedIndex(index)
+  thumbsApi?.scrollTo(index)
+}
+```
+- When the big picture changes: remember which one is showing and scroll the thumbnails to it. `?.` means "only if it exists".
+
+```ts
+mainApi.on('select', onSelect)
+return () => { mainApi.off('select', onSelect) }
+```
+- Run `onSelect` whenever the picture changes; remove it on cleanup.
+- Responsive changes: `aspect-[4/3] sm:aspect-[16/9]` (taller picture on phones), smaller thumbnails (`flex-[0_0_3.5rem] sm:flex-[0_0_6rem]`), smaller gradient (`h-40 sm:h-64`).
+
+## 7. `components/GeminiCarousel.tsx`
+
+```ts
+const goPrev = () => setActiveIndex(activeIndex === 0 ? lastIndex : activeIndex - 1)
+const goNext = () => setActiveIndex(activeIndex === lastIndex ? 0 : activeIndex + 1)
+```
+- Previous on the first card wraps to the last; next on the last wraps to the first.
+
+```ts
+const orderedItems = facilitiesItems.slice(activeIndex).concat(facilitiesItems.slice(0, activeIndex))
+```
+- `slice(activeIndex)` takes the active card and everything after it. `slice(0, activeIndex)` takes the cards before it. `concat` joins them, so the active card is always first.
+- Fixed heights (`h-130`, `w-370`, `h-70`) became `h-72 sm:h-96 lg:h-130`, `max-w-[92rem]` and `py-10 ... lg:p-15`.
+
+## 8. `components/SignatureCarousel.tsx`
+
+```ts
+const goPrev = () => setCurrentIndex(currentIndex === 0 ? lastIndex : currentIndex - 1)
+const goNext = () => setCurrentIndex(currentIndex === lastIndex ? 0 : currentIndex + 1)
+```
+- Same wrap-around idea as above.
+
+```ts
+const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+  const distance = event.changedTouches[0].clientX - touchStartX
+  return distance < -50 ? goNext() : distance > 50 ? goPrev() : null
+}
+```
+- `touchStartX` was saved when the finger touched down (`onTouchStart`). `changedTouches[0].clientX` is where the finger lifted.
+- `distance` is negative when swiping left, so it goes to the next community; a swipe right goes to the previous one. Swipes shorter than 50px are ignored.
+- `key={current.id}` on the slide makes React rebuild it on change, which replays the `.community-slide` fade defined in the CSS.
+- The fixed `min-h-[920px]` and the `absolute` card were removed, so the card now grows with its content on every screen. The heading had `text-xs` on phones and now uses `text-3xl sm:text-4xl`.
+
+## 9. Pages
+
+- `Home.tsx`:
+  ```ts
+  const query = params.toString()
+  navigate(query ? `/properties?${query}` : '/properties')
+  ```
+  `params.toString()` gives `cluster=Aruna&bedroom=3` (or an empty text). If it is not empty it is added after `?`, otherwise we go to plain `/properties`.
+  FAQ: `openIndex === index ? '−' : '+'` and `{openIndex === index ? (<answer/>) : null}`; clicking sets `openIndex` to the question, or to `null` if it was already open.
+  Fixed sizes: `lg:min-h-250`, `lg:min-h-220`, `text-4xl sm:text-5xl lg:text-6xl`, `w-fit` badge.
+- `Properties.tsx`: the Location and Price filters were `hidden` on phones; they are now `flex flex-col` and stack on phones, then sit side by side from `sm`.
+- `Amenities.tsx`: the open and closed accordion layouts were two copies; now one block uses `isOpen ? A : B` for the padding, title tag, icon and body. The picture grid is shorter on phones (`h-130 sm:h-170 lg:h-210`).
+- `Gallery.tsx`: the open and closed FAQ copies were merged the same way. The cluster select is `w-full md:w-90` instead of a fixed 360px.
+- `Contact.tsx`: now includes `<Dialog />` so the "Request tour" button in its navbar works. Paddings are smaller on phones.
+- `NotFound.tsx`: `const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'))` goes back if there is history, otherwise home.
+- `Calendar.tsx`: same 42-box `for` loop as the dialog.
+- Admin pages and auth pages: `h-screen` / `min-h-screen` became `h-dvh` / `min-h-dvh`. `dvh` is the visible height, so iPhone Safari's address bar no longer cuts the bottom off.
+- `GroundFloorDialog.tsx`: the 428px-wide tab bar is now `w-full`.
+- `Facilities.tsx`: stacks (`flex-col`) below 1024px and only uses the fixed 880px height from `lg`.
+
+## 10. `index.css`
+
+Everything added at the bottom is explained here.
+
+- `html { overflow-x: hidden; }` stops sideways scrolling on phones. It is set on `html` only, because setting it on `body` would stop the navbar from staying stuck to the top.
+- `-webkit-text-size-adjust: 100%` stops iPhones from enlarging text when they rotate.
+- `img, video, svg { max-width: 100%; }` means media can never be wider than its box.
+- `@media (hover: none) and (pointer: coarse)` only matches touch screens. There `input, select, textarea { font-size: 16px; }`, because iPhones zoom into any field smaller than that.
+- `@supports (padding: max(0px)) { body { padding-left: env(safe-area-inset-left) ... } }` keeps content clear of the iPhone notch in landscape. `env(...)` is the size of the notch area.
+- `dialog { max-height: calc(100dvh - 1rem); }` keeps pop-ups inside the screen.
+- `.community-slide` and `@keyframes community-fade` fade and slide the new community in (`from` → `to`), and are switched off when the device asks for reduced motion.
+- All `100vh` values were changed to `100dvh`.

@@ -5,13 +5,13 @@ import line149 from '../assets/Image (1).png'
 function Facilities({ textContent = 'Facility & amenities' }: FacilitiesProps) {
   return (
     <section className="home-facilities-section">
-        <h2 className="reveal text-[45px] text-center my-20 font-medium">{textContent}</h2>
-        <div className="home-facilities flex h-220 w-full">
-            <div className="home-facilities-image reveal h-full w-1/2">
+        <h2 className="reveal my-10 px-4 text-center text-3xl font-medium sm:my-14 sm:text-4xl lg:my-20 lg:text-[45px]">{textContent}</h2>
+        <div className="home-facilities flex w-full flex-col lg:h-220 lg:flex-row">
+            <div className="home-facilities-image reveal h-72 w-full sm:h-96 lg:h-full lg:w-1/2">
               <img src={line149} alt="Serenia community facilities" className="h-full w-full object-cover object-center" />
             </div>
-            <div className="reveal delay-1 h-full w-1/2">
-              <div className="divide-y divide-gray-300 flex h-full flex-col">
+            <div className="reveal delay-1 w-full lg:h-full lg:w-1/2">
+              <div className="flex flex-col divide-y divide-gray-300 lg:h-full">
                 <div
                   className="home-facility-link flex-1 py-5 px-8 flex items-center justify-center text-center"
                 >

@@ -1,16 +1,18 @@
- import { div } from "framer-motion/client"
-import { useEffect } from "react"
- import { useLocation } from "react-router-dom"
- 
- function revealAnimaton() {
-     const { pathname } = useLocation()
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+
+// Adds the class "is-visible" to every ".reveal" element when it scrolls into view
+function useRevealAnimation() {
+  const { pathname } = useLocation()
 
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)')
-    const revealAll = () => elements.forEach((element) => element.classList.add('is-visible'))
+    const items = document.querySelectorAll('.reveal:not(.is-visible)')
+    const showAll = () => items.forEach((item) => item.classList.add('is-visible'))
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-      revealAll()
+    // Phones that ask for less motion (or old browsers) just see everything at once
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      showAll()
       return
     }
 
@@ -23,14 +25,12 @@ import { useEffect } from "react"
           }
         })
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+      { threshold: 0.05 },
     )
 
-    elements.forEach((element) => observer.observe(element))
+    items.forEach((item) => observer.observe(item))
     return () => observer.disconnect()
   }, [pathname])
+}
 
- }
- 
- export default revealAnimaton
- 
+export default useRevealAnimation

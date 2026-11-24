@@ -258,7 +258,7 @@ function ArunaTypeA() {
   const progressWidthPercent = ((selectedSlideIndex + 1) / HERO_SLIDES.length) * 100
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 antialiased">
+    <div className="min-h-dvh bg-white text-slate-900 antialiased">
       <main className="mx-auto px-4 py-6 md:px-8 lg:px-12">
         {/* Breadcrumb & Actions */}
               <title>Aruna Type A - Serenia Real Estate</title>
@@ -389,12 +389,12 @@ function ArunaTypeA() {
                 more enjoyable while strengthening family bonding moments. Aruna Residence is the
                 perfect choice for young families and professionals seeking a home with a strategic
                 location.{' '}
-                {expandedAbout && (
+                {expandedAbout ? (
                   <span>
                     Thoughtful cross-ventilation, durable architectural finishes, and easy access to
                     nearby parks make day-to-day living effortless across every season.
                   </span>
-                )}{' '}
+                ) : null}{' '}
                 <button
                   type="button"
                   onClick={() => setExpandedAbout((prev) => !prev)}
@@ -516,7 +516,7 @@ function ArunaTypeA() {
                         <span className="font-bold text-slate-400">{isOpen ? '−' : '+'}</span>
                       </button>
 
-                      {isOpen && (
+                      {isOpen ? (
                         <div className="space-y-2.5 bg-white p-4 text-xs text-slate-600">
                           {section.items.map((item) => (
                             <div key={item.label} className="flex gap-2">
@@ -527,7 +527,7 @@ function ArunaTypeA() {
                             </div>
                           ))}
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   )
                 })}
@@ -632,7 +632,7 @@ function ArunaTypeA() {
                   <span>Schedule a tour</span>
                 </button>
                 <Link
-                  to="/properties/aruna/details"
+                  to="/admin/properties/aruna/details"
                   className="block w-full border border-slate-200 bg-stone py-3 text-center text-sm font-semibold text-slate-800 transition-colors hover:bg-stone-200"
                 >
                   View more detail

@@ -1,55 +1,33 @@
 
-import { useState, useEffect, useCallback } from 'react'
-import type { EmblaOptionsType } from 'embla-carousel'
+import { useState, useEffect } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-type PropType = {
-  slides: {
-    title: string
-    image: string
-  }[]
-  options?: EmblaOptionsType
+interface CarouselProps {
+  slides: { title: string; image: string }[]
 }
 
-const EmblaCarousel = (props: PropType) => {
-  const { slides, options } = props
-
+function Carousel({ slides }: CarouselProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [mainRef, mainApi] = useEmblaCarousel({ loop: true })
+  const [thumbsRef, thumbsApi] = useEmblaCarousel({ containScroll: 'keepSnaps', dragFree: true, loop: true })
 
-  const [emblaMainRef, emblaMainApi] = useEmblaCarousel({
-    loop: true,
-    ...options,
-  })
-
-  const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
-    containScroll: 'keepSnaps',
-    dragFree: true,
-    loop: true,
-  })
-
-  const onSelect = useCallback(() => {
-    if (!emblaMainApi) return
-
-    const index = emblaMainApi.selectedScrollSnap()
-
-    setSelectedIndex(index)
-    emblaThumbsApi?.scrollTo(index)
-  }, [emblaMainApi, emblaThumbsApi])
-
+  // Keep the big picture, the small thumbnails and the progress bar in sync
   useEffect(() => {
-    if (!emblaMainApi) return
+    if (!mainApi) return
+
+    const onSelect = () => {
+      const index = mainApi.selectedScrollSnap()
+      setSelectedIndex(index)
+      thumbsApi?.scrollTo(index)
+    }
 
     onSelect()
-
-    emblaMainApi.on('select', onSelect)
-    emblaMainApi.on('reInit', onSelect)
-
+    mainApi.on('select', onSelect)
     return () => {
-      emblaMainApi.off('select', onSelect)
-      emblaMainApi.off('reInit', onSelect)
+      mainApi.off('select', onSelect)
     }
-  }, [emblaMainApi, onSelect])
+  }, [mainApi, thumbsApi])
 
   if (!slides.length) return null
 
@@ -63,7 +41,7 @@ const EmblaCarousel = (props: PropType) => {
       <div className="relative isolate overflow-hidden">
 
         {/* Main carousel */}
-        <div className="overflow-hidden" ref={emblaMainRef}>
+        <div className="overflow-hidden" ref={mainRef}>
           <div className="flex touch-pan-y">
 
             {slides.map((slide, index) => (
@@ -72,7 +50,7 @@ const EmblaCarousel = (props: PropType) => {
                 key={`${slide.title}-${index}`}
                 aria-hidden={index !== selectedIndex}
               >
-                <div className="relative block aspect-[16/9] w-full overflow-hidden bg-stone-100 lg:aspect-[16/9] lg:max-h-[50rem]">
+                <div className="relative block aspect-[4/3] w-full overflow-hidden bg-stone-100 sm:aspect-[16/9] lg:max-h-[50rem]">
 
                   <img
                     src={slide.image}
@@ -94,7 +72,7 @@ const EmblaCarousel = (props: PropType) => {
         </div>
 
         {/* Cinematic bottom gradient */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-64 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t sm:h-64 from-black/50 via-black/15 to-transparent" />
 
         {/* Bottom overlay */}
         <div className="relative z-10 w-full">
@@ -103,14 +81,14 @@ const EmblaCarousel = (props: PropType) => {
 
             {/* Thumbnails */}
             <div
-              className="relative mb-4 min-w-0 flex justify-between p-2 mr-5 overflow-hidden"
-              ref={emblaThumbsRef}
+              className="relative mb-2 flex min-w-0 justify-between overflow-hidden p-1 sm:mb-4 sm:mr-5 sm:p-2"
+              ref={thumbsRef}
             >
               <div className="ml-0 flex w-fit max-w-full gap-2 rounded-sm border border-white/15 bg-black/30 p-1.5 shadow-xl backdrop-blur-xl sm:ml-20 sm:gap-3 sm:p-2">
 
                 {slides.map((slide, index) => (
                   <div
-                    className="min-w-0 flex-[0_0_5rem] sm:flex-[0_0_6rem]"
+                    className="min-w-0 flex-[0_0_3.5rem] sm:flex-[0_0_6rem]"
                     key={`${slide.title}-thumb-${index}`}
                   >
                     <button
@@ -119,8 +97,8 @@ const EmblaCarousel = (props: PropType) => {
                       aria-current={
                         index === selectedIndex ? 'true' : undefined
                       }
-                      onClick={() => emblaMainApi?.scrollTo(index)}
-                      className={`group relative block h-14 w-full overflow-hidden border transition-all duration-500 ease-out sm:h-20 ${
+                      onClick={() => mainApi?.scrollTo(index)}
+                      className={`group relative block h-10 w-full overflow-hidden border transition-all duration-500 ease-out sm:h-20 ${
                         index === selectedIndex
                           ? 'border-white shadow-[0_0_14px_rgba(255,255,255,0.25)]'
                           : 'border-white/30 opacity-65 hover:border-white/80 hover:opacity-100'
@@ -149,12 +127,12 @@ const EmblaCarousel = (props: PropType) => {
                   </div>
                 ))}
               </div>
-              <div className="mb-5 w-20 translate-y-7 flex items-end gap-2">
+              <div className="flex w-20 shrink-0 items-end gap-2 sm:mb-5 sm:translate-y-7">
 
               <button
                 type="button"
                 aria-label="Previous slide"
-                onClick={() => emblaMainApi?.scrollPrev()}
+                onClick={() => mainApi?.scrollPrev()}
                 className="flex h-9 w-9 shrink-0 items-center justify-center border border-white/40 bg-white/80  shadow-lg transition-all duration-300 hover:scale-110 hover:border-white hover:bg-white hover:text-gray-900 active:scale-95"
               >
                 <ChevronLeft aria-hidden="true" size={19} />
@@ -163,7 +141,7 @@ const EmblaCarousel = (props: PropType) => {
               <button
                 type="button"
                 aria-label="Next slide"
-                onClick={() => emblaMainApi?.scrollNext()}
+                onClick={() => mainApi?.scrollNext()}
                 className="flex h-9 w-9 shrink-0 items-center justify-center border border-white/40 bg-white/80 shadow-lg transition-all duration-300 hover:scale-110 hover:border-white hover:bg-white hover:text-gray-900 active:scale-95"
               >
                 <ChevronRight aria-hidden="true" size={19} />
@@ -204,4 +182,4 @@ const EmblaCarousel = (props: PropType) => {
   )
 }
 
-export default EmblaCarousel
+export default Carousel

@@ -610,7 +610,7 @@ export default function Aruna() {
       <section className="mx-auto w-full">
         <div className="flex flex-col lg:flex-row lg:h-100">
           <div className="flex w-full flex-col justify-center px-4 py-8 sm:p-8 lg:w-1/2">
-            <div className="mb-4 inline-flex h-10 w-42 items-center gap-2 bg-gold-cream p-3 text-xs font-semibold text-gold sm:mb-6 sm:text-sm">
+            <div className="mb-4 inline-flex h-10 w-fit items-center gap-2 bg-gold-cream p-3 text-xs font-semibold text-gold sm:mb-6 sm:text-sm">
               <img src={mapPin} alt="" className="h-4 w-4" /> Strategic location
             </div>
             <div className="space-y-2 sm:space-y-3">

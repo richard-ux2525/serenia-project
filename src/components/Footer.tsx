@@ -102,11 +102,11 @@ function Footer() {
                   Subscribe
                 </button>
               </form>
-              {subscribeNotice && (
+              {subscribeNotice ? (
                 <p role="status" aria-live="polite" className="mt-3 text-xs text-gray-300">
                   {subscribeNotice}
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
 

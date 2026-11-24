@@ -129,10 +129,6 @@ function Gallery() {
   const [activeSegment, setActiveSegment] = useState('Kitchen')
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
-  const toggleQuestion = (index: number) => {
-    setOpenIndex((prev) => (prev === index ? null : index))
-  }
-
   return (
     <main className="mx-auto max-w-[90rem] px-4 py-10 md:px-8 lg:px-12">
       <title>Gallery - Serenia Real Estate</title>
@@ -143,7 +139,7 @@ function Gallery() {
         <div className="mb-2 mt-6 space-y-4">
           <h1
             id="gallery-title"
-            className="text-5xl font-medium tracking-tight text-slate-900 lg:text-6xl"
+            className="text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
           >
             Our gallery
           </h1>
@@ -152,9 +148,9 @@ function Gallery() {
             family&apos;s comfort.
           </p>
         </div>
-        <div className="space-y-2">
+        <div className="w-full space-y-2 md:w-auto">
           <span className="block text-lg font-semibold text-slate-700">Clusters</span>
-          <div className="relative flex h-13 w-90 items-center justify-between border border-gray-200 bg-white transition-colors duration-200 hover:border-gray-400 focus-within:border-gray-900">
+          <div className="relative flex h-13 w-full items-center md:w-90 justify-between border border-gray-200 bg-white transition-colors duration-200 hover:border-gray-400 focus-within:border-gray-900">
             <img
               src={clusterIcon}
               alt=""
@@ -193,26 +189,22 @@ function Gallery() {
         aria-label="Gallery segments"
         className="mb-8 flex w-full items-center justify-between overflow-x-auto bg-[#f2f2f2] p-1.5"
       >
-        {segments.map((segment) => {
-          const isActive = activeSegment === segment
-
-          return (
-            <button
-              key={segment}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => setActiveSegment(segment)}
-              className={`min-w-fit flex-1 cursor-pointer whitespace-nowrap px-5 py-2.5 text-sm transition-all duration-200 ${
-                isActive
-                  ? 'bg-white font-medium text-gray-950 shadow-[0_1px_2px_rgba(0,0,0,0.06)]'
-                  : 'font-normal text-gray-500 hover:text-gray-800'
-              }`}
-            >
-              {segment}
-            </button>
-          )
-        })}
+        {segments.map((segment) => (
+          <button
+            key={segment}
+            type="button"
+            role="tab"
+            aria-selected={activeSegment === segment}
+            onClick={() => setActiveSegment(segment)}
+            className={`min-w-fit flex-1 cursor-pointer whitespace-nowrap px-4 py-2.5 text-sm transition-all duration-200 sm:px-5 ${
+              activeSegment === segment
+                ? 'bg-white font-medium text-gray-950 shadow-[0_1px_2px_rgba(0,0,0,0.06)]'
+                : 'font-normal text-gray-500 hover:text-gray-800'
+            }`}
+          >
+            {segment}
+          </button>
+        ))}
       </div>
 
       <section aria-label={`${activeSegment} gallery`} className="reveal delay-1">
@@ -236,12 +228,12 @@ function Gallery() {
 
       <section
         aria-labelledby="gallery-faq-title"
-        className="reveal -mx-4 mb-16 mt-24 min-h-240 px-4 py-16 md:-mx-8 md:px-8 lg:-mx-12 lg:px-12"
+        className="reveal -mx-4 mb-10 mt-14 px-4 py-10 sm:mt-24 sm:mb-16 sm:py-16 md:-mx-8 md:min-h-240 md:px-8 lg:-mx-12 lg:px-12"
       >
         <div className="mx-auto w-full max-w-5xl">
           <p
             id="gallery-faq-title"
-            className="mx-auto mb-14 max-w-sm text-center text-5xl font-medium leading-[1.15] tracking-tight text-neutral-900 lg:text-[42px]"
+            className="mx-auto mb-10 max-w-sm text-center text-3xl font-medium leading-[1.15] tracking-tight text-neutral-900 sm:mb-14 sm:text-4xl lg:text-[42px]"
           >
             FAQs after our
             <br />
@@ -251,42 +243,31 @@ function Gallery() {
           </p>
 
           <div className="space-y-4">
-            {questions.map(({ question, answer }, index: number) => {
-              const isOpen = openIndex === index
-
-              return isOpen ? (
-                <div key={question} className="bg-white">
-                  <button
-                    type="button"
-                    onClick={() => toggleQuestion(index)}
-                    aria-expanded={true}
-                    className="flex w-full cursor-pointer items-center justify-between gap-4 border-b border-neutral-100 px-6 py-5 text-left text-[15px] font-medium text-neutral-900"
-                  >
-                    <span>{question}</span>
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-[#f2f2f2] text-neutral-700">
-                      <Minus className="h-3.5 w-3.5" />
-                    </span>
-                  </button>
-                  <div className="space-y-4 px-6 py-5 text-[13.5px] leading-relaxed text-neutral-600">
+            {questions.map(({ question, answer }, index) => (
+              <div
+                key={question}
+                className={`bg-white ${openIndex === index ? '' : 'transition-colors hover:bg-neutral-50/70'}`}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  aria-expanded={openIndex === index}
+                  className={`flex w-full cursor-pointer items-center justify-between gap-4 px-4 py-5 text-left text-[15px] font-medium text-neutral-900 sm:px-6 ${
+                    openIndex === index ? 'border-b border-neutral-100' : ''
+                  }`}
+                >
+                  <span>{question}</span>
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-[#f2f2f2] text-neutral-700">
+                    {openIndex === index ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                  </span>
+                </button>
+                {openIndex === index ? (
+                  <div className="space-y-4 px-4 py-5 text-[13.5px] leading-relaxed text-neutral-600 sm:px-6">
                     {answer}
                   </div>
-                </div>
-              ) : (
-                <div key={question} className="bg-white transition-colors hover:bg-neutral-50/70">
-                  <button
-                    type="button"
-                    onClick={() => toggleQuestion(index)}
-                    aria-expanded={false}
-                    className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left text-[15px] font-medium text-neutral-900"
-                  >
-                    <span>{question}</span>
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-[#f2f2f2] text-neutral-700">
-                      <Plus className="h-3.5 w-3.5" />
-                    </span>
-                  </button>
-                </div>
-              )
-            })}
+                ) : null}
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -4,10 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 const weekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
 function Calendar() {
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const today = new Date()
-    return new Date(today.getFullYear(), today.getMonth(), 1)
-  })
+  const today = new Date()
+  const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDate, setSelectedDate] = useState('')
 
   const year = currentMonth.getFullYear()
@@ -15,12 +13,18 @@ function Calendar() {
   const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const daysInPreviousMonth = new Date(year, month, 0).getDate()
-  const days = Array.from({ length: 42 }, (_, index) => {
+
+  // 42 boxes = 6 weeks. Boxes outside this month get an empty date and look greyed out
+  const days = []
+  for (let index = 0; index < 42; index++) {
     const day = index - firstWeekday + 1
-    if (day < 1) return { day: daysInPreviousMonth + day, date: '', currentMonth: false }
-    if (day > daysInMonth) return { day: day - daysInMonth, date: '', currentMonth: false }
-    return { day, date: [year, String(month + 1).padStart(2, '0'), String(day).padStart(2, '0')].join('-'), currentMonth: true }
-  })
+    const inMonth = day >= 1 && day <= daysInMonth
+    const dateText = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    days.push({
+      day: day < 1 ? daysInPreviousMonth + day : day > daysInMonth ? day - daysInMonth : day,
+      date: inMonth ? dateText : '',
+    })
+  }
 
   const changeMonth = (amount: number) => {
     setCurrentMonth((current) => new Date(current.getFullYear(), current.getMonth() + amount, 1))
@@ -46,27 +50,26 @@ function Calendar() {
         </div>
 
         <div className="grid grid-cols-7 justify-items-center gap-y-1">
-          {days.map(({ day, date, currentMonth: isCurrentMonth }, index) => {
-            if (!isCurrentMonth) {
-              return <span key={`outside-${index}`} className="grid aspect-square w-full max-w-10 place-items-center text-sm text-gray-300">{day}</span>
-            }
-
-            const isSelected = selectedDate === date
-            return (
+          {days.map(({ day, date }, index) =>
+            date ? (
               <button
                 key={date}
                 type="button"
-                aria-label={new Date(year, month, day).toLocaleDateString('en-US', {
-                  weekday: 'long', month: 'long', day: 'numeric', year: 'numeric',
-                })}
-                aria-pressed={isSelected}
+                aria-label={new Date(year, month, day).toDateString()}
+                aria-pressed={selectedDate === date}
                 onClick={() => setSelectedDate(date)}
-                className={`grid aspect-square w-full max-w-10 place-items-center text-sm transition-colors ${isSelected ? 'bg-[#53583c] font-semibold text-white' : 'text-gray-700 hover:bg-stone-100'}`}
+                className={`grid aspect-square w-full max-w-10 place-items-center text-sm transition-colors ${
+                  selectedDate === date ? 'bg-[#53583c] font-semibold text-white' : 'text-gray-700 hover:bg-stone-100'
+                }`}
               >
                 {day}
               </button>
-            )
-          })}
+            ) : (
+              <span key={`outside-${index}`} className="grid aspect-square w-full max-w-10 place-items-center text-sm text-gray-300">
+                {day}
+              </span>
+            ),
+          )}
         </div>
 
         <p className="mt-5 min-h-5 border-t border-stone-200 pt-4 text-sm text-gray-600" aria-live="polite">

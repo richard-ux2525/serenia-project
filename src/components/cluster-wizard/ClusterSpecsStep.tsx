@@ -302,7 +302,7 @@ export default function ClusterSpecsStep({
                       active ? 'bg-white text-gray-900' : 'border border-gray-300'
                     }`}
                   >
-                    {active && <Check className="h-3 w-3 stroke-[3]" />}
+                    {active ? <Check className="h-3 w-3 stroke-[3]" /> : null}
                   </div>
                   <span className="truncate">{amenity}</span>
                 </button>
@@ -322,7 +322,7 @@ export default function ClusterSpecsStep({
                 <span className="text-xs font-bold text-gray-900">
                   Amenities {idx + 1}
                 </span>
-                {data.customAmenities.length > 1 && (
+                {data.customAmenities.length > 1 ? (
                   <button
                     type="button"
                     onClick={() => removeCustomAmenity(amenity.id)}
@@ -330,7 +330,7 @@ export default function ClusterSpecsStep({
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
-                )}
+                ) : null}
               </div>
 
               {/* Amenity Type */}

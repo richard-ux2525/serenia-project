@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { BedDouble, MapPin, TriangleAlert, ArrowUpRight } from 'lucide-react'
 import chevronDown from '../icons/Vector.svg'
@@ -51,32 +51,19 @@ function Dropdown() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(2)
   const activeCluster = clusters[activeIndex]
-  const desktopRef = useRef<HTMLDivElement | null>(null)
-  
-  const location = useLocation()
-  const isActive = location.pathname.startsWith('/properties')
-
-  // Close desktop dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (desktopRef.current && !desktopRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  const { pathname } = useLocation()
+  const isActive = pathname.startsWith('/properties')
 
   return (
     <li className="relative list-none">
       
       {/* =========================================================
-          1. DESKTOP VIEW (md and up) with Active Under-Stroke
+          1. DESKTOP VIEW (lg and up) with Active Under-Stroke
          ========================================================= */}
-      <div ref={desktopRef} className="hidden md:flex items-center gap-3 relative h-full py-2">
+      <div className="hidden lg:flex items-center gap-3 relative h-full py-2">
         <Link 
           to="/properties" 
-          className={`transition-colors ${isActive ? 'text-stone-950 font-semibold' : ''}`}
+          className={isActive ? 'text-stone-950 font-semibold' : ''}
         >
           Properties
         </Link>
@@ -95,11 +82,11 @@ function Dropdown() {
         </div>
 
         {/* Active Under-Stroke Indicator */}
-        {isActive && (
+        {isActive ? (
           <div className="absolute bottom-[-22px] left-0 right-0 h-[2px] bg-stone-900" />
-        )}
+        ) : null}
 
-        {isOpen && (
+        {isOpen ? (
           <>
             {/* Blurred Backdrop Overlay */}
             <div
@@ -109,34 +96,31 @@ function Dropdown() {
             />
 
             {/* Mega Menu Card */}
-            <div className="absolute left-1/2 top-12 mt-3 z-50 h-120 w-300 -translate-x-1/3 -translate-y-3 overflow-hidden border border-slate-200 bg-white shadow-2xl">
-              <div className="grid h-full overflow-hidden bg-white md:grid-cols-3">
+            <div className="fixed left-1/2 top-[4.5rem] z-50 h-120 w-[min(75rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden border border-slate-200 bg-white shadow-2xl">
+              <div className="grid h-full overflow-hidden bg-white lg:grid-cols-3">
                 
                 {/* Left Column: Cluster List */}
                 <div className="flex h-full flex-col bg-slate-50 border-r border-slate-200">
-                  {clusters.map((cluster, index) => {
-                    const isClusterActive = activeIndex === index
-                    return (
+                  {clusters.map((cluster, index) => (
                       <Link
                         key={cluster.name}
                         to={cluster.to}
                         onMouseEnter={() => setActiveIndex(index)}
                         onClick={() => setIsOpen(false)}
                         className={`flex flex-1 items-center justify-center border-b border-slate-200 px-4 text-xl font-medium transition-colors last:border-b-0 ${
-                          isClusterActive ? 'bg-white text-black' : 'text-slate-500 hover:text-slate-800'
+                          activeIndex === index ? 'bg-white text-black' : 'text-slate-500 hover:text-slate-800'
                         }`}
                       >
                         {cluster.name}
                         <sup
                           className={`ml-1 align-super text-[13px] ${
-                            isClusterActive ? 'text-slate-600' : 'text-slate-400'
+                            activeIndex === index ? 'text-slate-600' : 'text-slate-400'
                           }`}
                         >
                           0{index + 1}
                         </sup>
                       </Link>
-                    )
-                  })}
+                  ))}
                 </div>
 
                 {/* Middle Column: Active Image Preview */}
@@ -177,13 +161,13 @@ function Dropdown() {
               </div>
             </div>
           </>
-        )}
+        ) : null}
       </div>
 
       {/* =========================================================
-          2. MOBILE VIEW (Below md)
+          2. MOBILE VIEW (Below lg)
          ========================================================= */}
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <div className="flex items-center justify-between w-full">
           <Link 
             to="/properties" 
@@ -207,7 +191,7 @@ function Dropdown() {
           </button>
         </div>
 
-        {mobileOpen && (
+        {mobileOpen ? (
           <div className="mt-3 flex flex-col space-y-2 border-l-2 border-stone-200 pl-3">
             {clusters.map((cluster) => (
               <Link
@@ -235,7 +219,7 @@ function Dropdown() {
               </Link>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
 
     </li>

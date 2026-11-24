@@ -179,7 +179,7 @@ export default function ClusterDetailsStep({
             />
 
             {/* Click pin marker */}
-            {data.pinLocation && (
+            {data.pinLocation ? (
               <div
                 className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center"
                 style={{
@@ -191,7 +191,7 @@ export default function ClusterDetailsStep({
                   <MapPin className="h-4 w-4" />
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* Map Action Banner at Bottom */}
             <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-white/95 px-3 py-2 text-xs backdrop-blur-xs shadow-xs border border-gray-200">

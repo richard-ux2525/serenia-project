@@ -234,7 +234,7 @@ export default function CreateCluster() {
   }
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
+    <div className="flex h-dvh w-full overflow-hidden bg-[#F9FAFB] text-gray-900 font-sans antialiased">
       {/* LEFT SIDEBAR (Standard Layout) */}
             <title>Create Cluster - Serenia Real Estate</title>
       <Aside sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -270,7 +270,7 @@ export default function CreateCluster() {
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
             </button>
 
-            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 flex justify-between items-center gap-2.5 cursor-pointer p-1">
+            <div className="ml-2 shadow-boxxx rounded-3xl flex w-35 justify-between items-center gap-2.5 cursor-pointer p-1">
               <div className='flex items-center gap-2'>
                 <img
                 src={profileImage}
@@ -366,41 +366,41 @@ export default function CreateCluster() {
 
             {/* STEP COMPONENT VIEW */}
             <div className="flex-1 overflow-y-auto p-6">
-              {mainStep === 0 && (
+              {mainStep === 0 ? (
                 <ClusterDetailsStep
                   subStep={subStep}
                   data={clusterDetails}
                   onChange={handleDetailsChange}
                 />
-              )}
-              {mainStep === 1 && (
+              ) : null}
+              {mainStep === 1 ? (
                 <ClusterSpecsStep
                   subStep={subStep}
                   data={clusterSpecs}
                   onChange={handleSpecsChange}
                 />
-              )}
-              {mainStep === 2 && (
+              ) : null}
+              {mainStep === 2 ? (
                 <HouseMediaStep
                   subStep={subStep}
                   data={houseMedia}
                   onChange={handleMediaChange}
                 />
-              )}
-              {mainStep === 3 && (
+              ) : null}
+              {mainStep === 3 ? (
                 <TypeAndUnitsStep
                   subStep={subStep}
                   data={typeAndUnits}
                   onChange={handleTypeUnitsChange}
                   onOpenNoteDialog={handleOpenNoteDialog}
                 />
-              )}
+              ) : null}
             </div>
 
             {/* WIZARD FOOTER ACTION BAR */}
             <div className="flex h-16 shrink-0 items-center justify-between border-t border-gray-200 bg-white px-6">
               <div>
-                {(mainStep > 0 || subStep > 0) && (
+                {(mainStep > 0 || subStep > 0) ? (
                   <button
                     type="button"
                     onClick={handleBack}
@@ -409,7 +409,7 @@ export default function CreateCluster() {
                     <ArrowLeft className="h-3.5 w-3.5" />
                     Back
                   </button>
-                )}
+                ) : null}
               </div>
 
               <div className="flex items-center gap-3">
